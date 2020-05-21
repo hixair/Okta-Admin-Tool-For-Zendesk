@@ -27,3 +27,6 @@ Contributions
 Please fork the repo and create a pull request. Thanks!
 
 Screenshots 
+![image](https://user-images.githubusercontent.com/23067036/82548094-dea21380-9bae-11ea-9300-9f31f38dc12f.png)
+![image](https://user-images.githubusercontent.com/23067036/82548099-e19d0400-9bae-11ea-9f0e-6fa0839d8769.png)
+![image](https://user-images.githubusercontent.com/23067036/82548109-e3ff5e00-9bae-11ea-919c-c346c402406d.png)
