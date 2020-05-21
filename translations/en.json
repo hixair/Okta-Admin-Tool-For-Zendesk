@@ -3,21 +3,70 @@
     "name": "Okta Actions",
     "short_description": "Allows IT admins to perform actions on Okta accounts from Zendesk",
     "installation_instructions": "Click the Install button to get started. To configure the app, you will need to create your [Okta API key](https://developer.okta.com/docs/guides/create-an-api-token/overview/) and your Okta subdomain (eg. If you Okta domain is abc.okta.com - enter abc as your Okta subdomain during the app configuration process). Once the app is installed and configured you will find Okta Actions in your Zendesk sidebar on the right side, ready to go!",
-  	"long_description":"Okta actions helps IT / tech support teams quickly and easily perform various actions on their organizations Okta user accounts.\n\n List of actions that can be performed include: \n\n - Password resets (including expiring temporary password) \n - Account unlocks \n - Resetting MFA enrollments \n - Clearing existing user sessions \n - Account suspensions \n - Account deactivations. \n \n For any feature requests, please email rishidhar@gmail.com",
+  	"long_description":"Okta actions helps IT / tech support teams quickly and easily perform various actions on their organizations Okta user accounts.\n\n List of actions that can be performed include: \n\n - Password resets (including expiring temporary password) \n - Account unlocks \n - Resetting any MFA enrollments \n - Clearing existing user sessions \n - Account suspensions \n - Account deactivations. \n \n For any feature requests, please email rishidhar@gmail.com",
   	"parameters": {
   			"oktaSubDomain": {  
     			"label": {  
       				"value":"Enter your Okta Subdomain (eg. if your Okta domain is abc.okta.com - enter abc here)",  
-      				"title":"Asking user for their Okta Subdomain."  
+      				"title":"Ask user for their Okta Subdomain."  
     			}  
   			},
   			"oktaAPItoken": {  
     			"label": {  
       				"value":"Enter your Okta API Token (To create your token navigate to Okta Admin Console > Security > API and click the Create Token button)",  
-      				"title":"Asking user for the Okta API Token"  
+      				"title":"Ask user for the Okta API Token"  
     			}  
-  			}    
-	}
+  			},
+        "optionShowTitle": {  
+          "label": {  
+              "value":"Show title",  
+              "title":"Ask user if title needs to be displayed"  
+          }  
+        },
+        "optionShowLocation": {  
+          "label": {  
+              "value":"Show location (Format: City, Country Code)",  
+              "title":"Ask user if location needs to be displayed"  
+          }  
+        },
+        "optionShowOktaLogin": {  
+          "label": {  
+              "value":"Show Okta login",  
+              "title":"Ask user if Okta Login needs to be displayed"  
+          }  
+        },
+        "optionShowAccountStatus": {  
+          "label": {  
+              "value":"Show account status",  
+              "title":"Ask user if Account Status needs to be displayed"  
+          }  
+        },
+        "optionShowPwdLastChanged": {  
+          "label": {  
+              "value":"Show password last set date",  
+              "title":"Ask user if Password last set date needs to be displayed"  
+          }  
+        },
+        "optionShowMobileNumber": {  
+          "label": {  
+              "value":"Show mobile number",  
+              "title":"Ask user if Mobile Number needs to be displayed"  
+          }  
+        },
+        "optionShowManagerName": {  
+          "label": {  
+              "value":"Show manager name",  
+              "title":"Ask user if Manager Name needs to be displayed"  
+          }  
+        },
+        "optionShowManagerEmail": {  
+          "label": {  
+              "value":"Show manager email",  
+              "title":"Ask user if Manager Email needs to be displayed"  
+          }  
+        }
+          
+	   }
   }
 }
 
