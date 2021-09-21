@@ -5,89 +5,131 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
 html {
-
-  overflow-x: hidden;
+	overflow-x: hidden;
 }
 
+.ui-autocomplete {
+	max-height: 250px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+}
+
+/* IE 6 doesn't support max-height
+  * we use height instead, but this forces the menu to always be this tall
+  */
+
+* html .ui-autocomplete {
+	height: 100px;
+}
+
+input[type=text],
+select {
+	width: 90%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 3px solid #ccc;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+	outline: none;
+}
+
+input[type=text]:focus {
+	border: 3px solid #555;
+}
+
+.loading {
+	display: inline-block;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	background-color: #F0F0F0;
+}
+
+.ui-autocomplete-loading {
+	background: url('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/images/ui-anim_basic_16x16.gif') no-repeat right center
+}
 </style>
+<title>Okta Actions</title>
 </head>
 <body>
-<div class="d-flex justify-content-center">
-<div class="spinner-border" id="spinner" role="status">
-<span class="sr-only">Loading...</span>
-</div>
-</div>
+  <div class="d-flex justify-content-center">
+     <div class="spinner-border" id="spinner" role="status">
+        <span class="sr-only">Loading...</span>
+     </div>
+  </div>
+  <div id="appScreen">
+     <div class="container">
+        <div class="row">
+           <div class="card-body">
+              <div class="row">
+                 <div class="col-12 col-lg-8 col-md-6">
+                    <h3 id="fullname" class="mb-0 text-truncated"></h3>
+                    <span id="oktalogin" class="lead"></span>
+                    <span id="title" class=".font-weight-normal"></span>
+                    <span id="location" class=".font-weight-normal"></span>
+                    <kbd id="accountstatus" class=".font-weight-normal"></kbd>
+                    <br>
+                    <span id="pwdlastchanged" class=".font-weight-normal"></span>
+                    <span id="mobilenumber" class=".font-weight-normal"></span>
+                    <span id="managerName" class=".font-weight-normal"></span>
+                    <span id="managerEmail" class=".font-weight-normal"></span>              
+                 </div>
+                 <!--/col-->
+              </div>
+              <!--/row-->
+           </div>
+           <!--/card-block-->
+        </div>
+     </div>
 
-
-<div id="appScreen">
-<div class="container">
-<div class="row">
-<div class="card-body">
-<div class="row">
-<div class="col-12 col-lg-8 col-md-6">
-
-<h3 id="fullname" class="mb-0 text-truncated"></h3>
-<span id="title" class="lead"></span>
-<kbd id="accountstatus" class=".font-weight-normal"></kbd>
-<br>
-<span id="oktalogin" class=".font-weight-normal"></span>
-<span id="location" class=".font-weight-normal"></span>
-<span id="pwdlastchanged" class=".font-weight-normal"></span>
-<span id="mobilenumber" class=".font-weight-normal"></span>
-<span id="managerName" class=".font-weight-normal"></span>
-<span id="managerEmail" class=".font-weight-normal"></span>              
-</div>
-
-<!--/col-->
-</div>
-<!--/row-->
-</div>
-<!--/card-block-->
-</div>
-</div>
-<br>
-
-<div class="row justify-content-center">
-<button type="button" id="resetOktaPasswordButton" class="btn btn-outline-primary mr-2" data-toggle="collapse" data-target="#ResetPasswordCollapseForm">Reset Password</button>
-<button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mr-1" data-toggle="dropdown">Reset Multifactor</button>
-<div id="mfa-dropdown-buttons" class="dropdown-menu">
-</div><br>
-
-<div id="ResetPasswordCollapseForm" class="collapse pt-3 pl-3 pr-3">
-<div class="form-group border border-secondary rounded pt-3 pl-3 pr-3 pb-2">
-<input type="password" class="form-control" id="pwd" placeholder="Enter new password here">
-<div class="form-check">
-<input class="form-check-input" type="checkbox" value="" id="expirePasswordCheckbox">
-<label class="form-check-label" for="expirePasswordCheckbox">
-<p class="small">Expire password (user will be forced to change password on next login)</p>
-</label>
-</div>
-<center><p class="small">New password must follow password policy set in your Okta organization.</p>
-<button disabled="disabled" type="button" id="submitNewOktaPassword" class="btn btn-outline-primary btn-sm mr-2">Set Password</button></center>
-</div>
-</div>
-</div>
-<br>
-<div class="row justify-content-center">
-<button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mr-1" data-toggle="dropdown">More Actions</button>
-<div class="dropdown-menu">
-<a class="dropdown-item disabled" id="unlockUserButton" href="#">Unlock User</a>
-<a class="dropdown-item" id="clearSessionsButton" href="#">Clear User Sessions</a>
-<a class="dropdown-item" id="suspendUserButton" href="#">Suspend account</a>
-<a class="dropdown-item disabled" id="unsuspendUserButton" href="#">Unsuspend account</a>
-<a class="dropdown-item" id="deactivateUserButton" href="#">Deactivate</a>
-</div> 
-</div>
-<br>
-<div id="alertNotificationDiv" class="alert alert-info text-center alert-dismissible" role="alert" style="display:none">
-<button type="button" id="closeAlert1" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<div id="NotificationMessage"> </div>
-</div>
-</div>
-<div id="infoScreen"></div>
-</div>
+     <div id="alertNotificationDiv" class="alert alert-info text-center alert-dismissible" role="alert" style="display:none">
+        <button type="button" id="closeAlert1" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div id="NotificationMessage"> </div>
+     </div>
+     <div class="row justify-content-center">
+        <button type="button" id="resetOktaPasswordButton" class="btn btn-outline-primary mr-2" data-toggle="collapse" data-target="#ResetPasswordCollapseForm">Reset Password</button>
+        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mr-1" data-toggle="dropdown">Reset Multifactor</button>
+        <div id="mfa-dropdown-buttons" class="dropdown-menu"></div>
+        <br>
+        <div id="ResetPasswordCollapseForm" class="collapse pt-3 pl-3 pr-3">
+           <div class="form-group border border-secondary rounded pt-3 pl-3 pr-3 pb-2">
+              <input type="password" class="form-control" id="pwd" placeholder="Enter new password here">
+              <div class="form-check">
+                 <input class="form-check-input" type="checkbox" value="" id="expirePasswordCheckbox">
+                 <label class="form-check-label" for="expirePasswordCheckbox">
+                    <p class="small">Expire password (user will be forced to change password on next login)</p>
+                 </label>
+              </div>
+              <center>
+                 <p class="small">New password must follow password policy set in your Okta organization.</p>
+                 <button disabled="disabled" type="button" id="submitNewOktaPassword" class="btn btn-outline-primary btn-sm mr-2">Set Password</button>
+              </center>
+           </div>
+        </div>
+     </div>
+     <br>
+     
+     <div class="row justify-content-center">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split mr-1" data-toggle="dropdown">More Actions</button>
+        <div class="dropdown-menu">
+           <a class="dropdown-item disabled" id="unlockUserButton" href="#">Unlock User</a>
+           <a class="dropdown-item" id="clearSessionsButton" href="#">Clear User Sessions</a>
+           <a class="dropdown-item" id="suspendUserButton" href="#">Suspend account</a>
+           <a class="dropdown-item disabled" id="unsuspendUserButton" href="#">Unsuspend account</a>
+           <a class="dropdown-item" id="deactivateUserButton" href="#">Deactivate</a>
+        </div>
+     </div>
+     
+  </div>
+  <div id="infoScreen"></div>
+  <div id="searchScreen" style="display:none">
+     <label for="user_okta_login">Search for an Okta user in your org:</label><input type="text" class="form-control" id="user_okta_login" placeholder="Search by name.." autocomplete="off"><br><h6>⚠️ No Okta users matched this tickets requesters email in your Okta org.<br><br>Use the search field above to lookup an Okta user manually.<br></h3>
+  </div>
 
 <!-- ZAF library -->
 <script src="https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js"></script>
@@ -100,475 +142,596 @@ html {
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-</script>
 
 <!-- Moment JS library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
 
+<!-- Bootstrap SP library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.1.2/bootstrap-show-password.min.js"></script>
+
+<!-- JQuery UI JS library -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 <script>
 var client = ZAFClient.init();
 client.invoke('resize', {
-  width: '100%',
-  height: '400px'
+    width: '100%',
+    height: '400px'
 });
 
-var allOktaGroups = new Array()
+var MFAList = {
+    "DUO web": "DUO",
 
-var MFAList = {"DUO web":"DUO",
+    "GOOGLE token:software:totp": "Google Authenticator",
 
-"GOOGLE token:software:totp":"Google Authenticator",
+    "OKTA call": "Okta Call",
 
-"OKTA call":"Okta Call",
+    "OKTA email": "Okta Email",
 
-"OKTA email":"Okta Email",
+    "OKTA push": "Okta Verify",
 
-"OKTA push":"Okta Verify",
+    "OKTA question": "Okta question",
 
-"OKTA question":"Okta question",
+    "OKTA sms": "Okta SMS",
 
-"OKTA sms":"Okta SMS",
+    "RSA token": "RSA",
 
-"RSA token":"RSA",
+    "SYMANTEC token": "Symantec",
 
-"SYMANTEC token":"Symantec",
-
-"YUBICO token:hardware":"Yubico",                 
-}
-
-function getCurrentUserEmail() {
-
-  var appScreenDiv = document.getElementById("appScreen");
-  appScreenDiv.style.display = "none";
-
-  var loadingSpinner = document.getElementById("spinner");
-  loadingSpinner.style.display = "block";
-
-  client.get('ticket.requester.email').then(function(data) {
-    var ticketUser = data['ticket.requester.email'];
-
-    displayOktaInfo(ticketUser)
-  });
-}
-
-
-function resetOktaFactor (OktaID, factorID, FactorName){
-  
-  var resetFactorURL = {
-    url: 'https://' +"{{setting.oktaSubDomain}}"+ '.okta.com/api/v1/users/'+ OktaID+'/factors/'+factorID,
-    type: 'DELETE',
-    secure: true,
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-  client.request(resetFactorURL).then(function(data) {
-   if(data.status == 204){
-    $("#NotificationMessage").html('<strong>Success! </strong>'+FactorName+' factor was reset');
-    $("#alertNotificationDiv").show(); 
-    getCurrentUserEmail()
-  }
-
-}).catch(function(error) {
-  $("#NotificationMessage").html('<strong>Error: </strong> Unable to reset '+FactorName+' factor');
-  $("#alertNotificationDiv").show();
-})
+    "YUBICO token:hardware": "Yubico",
 
 }
 
-function resetOktaPassword(OktaID){
-
-  var newpwd = document.getElementById('pwd').value
-
-  var resetOktaPasswordCall = {
-    url: 'https://'+"{{setting.oktaSubDomain}}"+'.okta.com/api/v1/users/'+ OktaID,
-    type: 'POST',
-    secure: true,
-    datatype: 'json',
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    data: '{"credentials":{"password":{"value":"' +newpwd+ '"}}}',
-    cors: false
-  };
-
-  client.request(resetOktaPasswordCall).then(function(data) {
-   if(data.status == 200){
-
-
-    var checkBox = document.getElementById("expirePasswordCheckbox");
-      // If the checkbox is checked, display the output text
-      if (checkBox.checked == true){
-       expireOktaPassword(OktaID)
-     }
-     else{
-      $("#NotificationMessage").html('<strong>Success! </strong> Password was set successfully');
-      $("#alertNotificationDiv").show();
-      $('#ResetPasswordCollapseForm').collapse('toggle');
-      getCurrentUserEmail()}
-
-    }
-
-  }).catch(function(error) {
-    $('#ResetPasswordCollapseForm').collapse('toggle');
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to set new password. Please ensure new password matches organizational password policy');
-    $("#alertNotificationDiv").show();
-  });
-
+async function refreshInfo(okta_id) {
+    profile = await getOktaProfileById(okta_id)
+    displayOktaInfo(profile)
 }
 
-function expireOktaPassword(OktaID){
-
-  var expirePasswordinOkta = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/lifecycle/expire_password?tempPassword=false',
-    type: 'POST',
-    secure: true,
-    datatype: 'json',
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-  client.request(expirePasswordinOkta).then(function(data) {
-
-    if(data.status == 200){
-      $('#ResetPasswordCollapseForm').collapse('toggle');
-      $("#NotificationMessage").html('<strong>Success! </strong>Password was reset and expired.');
-      $("#alertNotificationDiv").show();
-      getCurrentUserEmail()
-
-    }
-
-  }).catch(function(error) {
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to expire password');
-    $("#alertNotificationDiv").show();
-  });
+async function getOktaProfileByTicketEmail() {
+    let promise = new Promise(function(resolve, reject) {
+        client.get('ticket.requester.email').then(function(data) {
+            var ticketUser = data['ticket.requester.email'];
+            var getOktaUserInfo = {
+                url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users?q=' + ticketUser + '&limit=1',
+                type: 'GET',
+                secure: true,
+                datatype: 'json',
+                contentType: 'application/json',
+                httpCompleteResponse: false,
+                headers: {
+                    "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+                },
+                cors: false
+            };
+            client.request(getOktaUserInfo).then(function(data) {
+                if (data.length === 1) {
+                    resolve(data[0])
+                } else {
+                    displaySearch()
+                }
+            })
+        })
+    })
+    let result = await promise
+    return result
 }
 
-function unlockOktaUser(OktaID){
-  var unlockOktaUserCall = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/lifecycle/unlock',
-    type: 'POST',
-    secure: true,
-    datatype: 'json',
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-
-  client.request(unlockOktaUserCall).then(function(data) {
-   if(data.status == 200){
-
-    $("#NotificationMessage").html('<strong>Success! </strong>User account was unlocked.');
-    $("#alertNotificationDiv").show();
-    document.getElementById("unlockUserButton").classList.add("disabled") 
-    getCurrentUserEmail()
-  }
-}).catch(function(error) {
-  $("#NotificationMessage").html('<strong>Error: </strong> Unable to unlocked user account');
-  $("#alertNotificationDiv").show();
-});
-}
-
-function clearUserSessions(OktaID){
-  var clearUserSessionsCall = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/sessions',
-    type: 'DELETE',
-    secure: true,
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-
-  client.request(clearUserSessionsCall).then(function(data) {
-   if(data.status == 204){
-    $("#NotificationMessage").html('<strong>Success! </strong> All existing user sessions were cleared');
-    $("#alertNotificationDiv").show();
-    getCurrentUserEmail()
-  } }
-  ).catch(function(error) {
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to clear user sessions');
-    $("#alertNotificationDiv").show();
-  });
-
-}
-
-function suspendUser(OktaID){
-  var suspendUserCall = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/lifecycle/suspend',
-    type: 'POST',
-    secure: true,
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-
-  client.request(suspendUserCall).then(function(data) {
-   if(data.status == 200){
-    $("#NotificationMessage").html('<strong>Success! </strong> User was suspended in Okta');
-    $("#alertNotificationDiv").show();
-    document.getElementById("unsuspendUserButton").classList.remove("disabled")
-    getCurrentUserEmail()
-  } }
-  ).catch(function(error) {
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to suspend user account');
-    $("#alertNotificationDiv").show();
-  });
-
-}
-
-
-function unsuspendUser(OktaID){
-  var suspendUserCall = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/lifecycle/unsuspend',
-    type: 'POST',
-    secure: true,
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-
-  client.request(suspendUserCall).then(function(data) {
-   if(data.status == 200){
-    $("#NotificationMessage").html('<strong>Success! </strong> User was unsuspended in Okta');
-    $("#alertNotificationDiv").show();
-    document.getElementById("suspendUserButton").classList.remove("disabled")
-    document.getElementById("unsuspendUserButton").classList.add("disabled")
-    getCurrentUserEmail()
-  } }
-  ).catch(function(error) {
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to unsuspend user account');
-    $("#alertNotificationDiv").show();
-  });
-
-}
-
-function deactivateUser(OktaID){
-  var suspendUserCall = {
-    url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+ OktaID+'/lifecycle/deactivate?sendEmail=false',
-    type: 'POST',
-    secure: true,
-    contentType: 'application/json',
-    httpCompleteResponse: true,
-    headers: {
-      "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-    },
-    cors: false
-  };
-
-  client.request(suspendUserCall).then(function(data) {
-   if(data.status == 200){
-    $("#NotificationMessage").html('<strong>Success! </strong> User was deactivated in Okta');
-    $("#alertNotificationDiv").show();
-    document.getElementById("deactivateUserButton").classList.add("disabled")
-    getCurrentUserEmail()
-  } }
-  ).catch(function(error) {
-    $("#NotificationMessage").html('<strong>Error: </strong> Unable to unsuspend user account');
-    $("#alertNotificationDiv").show();
-  });
-
-}
-
-function getEnrolledMFAFactors(OktaID){
-
- document.getElementById("mfa-dropdown-buttons").innerHTML=""
-
- var getOktaFactors = {
-  url: 'https://' +"{{setting.oktaSubDomain}}"+ '.okta.com/api/v1/users/'+ OktaID+'/factors',
-  type: 'GET',
-  secure: true,
-  datatype: 'json',
-  contentType: 'application/json',
-  httpCompleteResponse: true,
-  headers: {
-    "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-  },
-  cors: false
-};
-
-client.request(getOktaFactors).then(function(data) {
-
- if(data.status == 200){
-  if(Object.keys(data.responseJSON).length > 0){
-    for (var i in data.responseJSON) {
-      var FactorID=data.responseJSON[i]["id"]
-      var MFAActivationStatus=data.responseJSON[i]["status"]
-      var MFAProvider=data.responseJSON[i]["provider"]
-      var MFAType=data.responseJSON[i]["factorType"]
-      var MFAName = MFAList[MFAProvider+" "+MFAType]
-      var MFAButtonName = "reset"+MFAProvider+MFAType+"FactorButton"
-
-      if((MFAProvider+" "+MFAType in MFAList) && (MFAActivationStatus == 'ACTIVE')){
-       document.getElementById("mfa-dropdown-buttons").innerHTML += "<a class='dropdown-item' id='"+MFAButtonName+"' onclick='resetOktaFactor(\""+OktaID+"\",\""+FactorID+"\",\""+MFAName+"\")' href='#'>Reset "+ MFAName +" factor</a>";
-     }
-   }
- }
- else{
-  document.getElementById("mfa-dropdown-buttons").innerHTML += "<a class='dropdown-item' id='NoMFAEnrolledButton' href='#'>No factors enrolled</a>";
-}
-
-}
-})
-}
-
-function removeHTMLElement(id){
-  var element = document.getElementById(id);
-  if (element != null) {
-    document.getElementById(id).remove();
-  }
-}
-
-function displayOktaInfo(OktaID){
-  client.metadata().then(function(metadata) {
-
-    var displayTitle = metadata.settings["optionShowTitle"]
-    var displayLocation = metadata.settings["optionShowLocation"]
-    var displayOktaLogin = metadata.settings["optionShowOktaLogin"]
-    var displayAccountStatus = metadata.settings["optionShowAccountStatus"]
-    var displayPasswordChanged = metadata.settings["optionShowPwdLastChanged"]
-    var displaymobileNumber = metadata.settings["optionShowMobileNumber"]
-    var displayManagerName = metadata.settings["optionShowManagerName"]
-    var displayManagerEmail = metadata.settings["optionShowManagerEmail"]
-
-
-
-
-    var getOktaUserInfo = {
-      url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/'+OktaID,
-      type: 'GET',
-      secure: true,
-      datatype: 'json',
-      contentType: 'application/json',
-      httpCompleteResponse: false,
-      headers: {
-        "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
-      },
-      cors: false
+async function getOktaProfileById(oktaId) {
+    var getOktaUserById = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + oktaId,
+        type: 'GET',
+        secure: true,
+        datatype: 'json',
+        contentType: 'application/json',
+        httpCompleteResponse: false,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
     };
 
-    client.request(getOktaUserInfo).then(function(data) {
-      document.getElementById("appScreen").style.display = "block";
-      document.getElementById("spinner").style.display = "none";
+    let promise = new Promise(function(resolve, reject) {
+        client.request(getOktaUserById).then(function(data) {
+            resolve(data)
+        })
+    })
+    let result = await promise
+    return result
+}
 
-      getEnrolledMFAFactors(data["id"]);
+async function getCurrentUserEmail() {
+    var appScreenDiv = document.getElementById("appScreen");
+    appScreenDiv.style.display = "none";
 
-           //Display basic account details
+    var loadingSpinner = document.getElementById("spinner");
+    loadingSpinner.style.display = "block";
 
-           document.getElementById("fullname").innerHTML = data["profile"]["firstName"]+' '+data["profile"]["lastName"]+'<br>';
+    okta_profile = await getOktaProfileByTicketEmail()
+    displayOktaInfo(okta_profile)
+}
 
-           if (displayTitle != false){
-             document.getElementById("title").innerHTML = data["profile"]["title"]+'<br>';}
-             else{
-               removeHTMLElement("title") }
+function displaySearch() {
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("searchScreen").style.display = "block";
+    var getData = function(request, response) {
+        var getOktaUserInfo = {
+            url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users?q=' + request["term"],
+            type: 'GET',
+            secure: true,
+            datatype: 'json',
+            contentType: 'application/json',
+            httpCompleteResponse: false,
+            headers: {
+                "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+            },
+            cors: false
+        };
+        client.request(getOktaUserInfo).then(function(data) {
+            var searchResults = new Array()
+            for (var i in data) {
+                var oktauser = {
+                    value: data[i]["profile"]["firstName"] + ' ' + data[i]["profile"]["lastName"],
+                    email: data[i]["profile"]["login"],
+                    title: data[i]["profile"]["title"],
+                    id: data[i]["id"]
 
-               if (displayLocation != false){
-                 document.getElementById("location").innerHTML = 'Location: '+data["profile"]["city"]+', ' +data["profile"]["countryCode"]+'<br>' ;}
-                 else{
-                   removeHTMLElement("location")}
+                };
+                searchResults.push(oktauser);
+            }
+            if (!searchResults.length) {
+                response([{
+                    email: "No results found",
+                    value: "No results found"
+                }])
+            } else {
+                response(searchResults)
+            }
+        })
+    };
 
-                   if (displayOktaLogin != false){
-                     document.getElementById("oktalogin").innerHTML = 'Login: '+data["profile"]["login"]+'<br>';}
-                     else{
-                       removeHTMLElement("oktalogin")}
+    $("#user_okta_login").autocomplete({
+            delay: 800,
+            minLength: 0,
+            source: getData,
 
-                       if (displayAccountStatus != false){
-                         document.getElementById("accountstatus").innerHTML = "Status: "+data["status"]+'<br>';}
-                         else{
-                           removeHTMLElement("accountstatus")}
+            focus: function(event, ui) {
+                $("#user_okta_login").val(ui.item.value);
+                return false;
+            },
+            select: async function(event, ui) {
+                document.getElementById("spinner").style.display = "block";
+                document.getElementById("searchScreen").style.display = "none";
+                profile = await getOktaProfileById(ui.item.id)
+                displayOktaInfo(profile);
+            },
+            change: function(event, ui) {
+                if (!ui.item) {
+                    $("#user_okta_login").val("");
+                }
+            }
 
-                           if (displayPasswordChanged != false){
-                             document.getElementById("pwdlastchanged").innerHTML = 'Password last set: '+moment(data["passwordChanged"]).format('L')+'<br>';}
-                             else{
-                               removeHTMLElement("pwdlastchanged")}
+        })
+        .autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append("<div><b>" + item.value + "</b><br>" + item.email + "<br>" + "</div>")
+                .appendTo(ul);
+        };
+}
 
-                               if (displaymobileNumber != false){
-                                 document.getElementById("mobilenumber").innerHTML = 'Mobile Number: '+data["profile"]["mobilePhone"]+'<br>';}
-                                 else{
-                                   removeHTMLElement("mobilenumber")}
+function resetOktaFactor(OktaID, factorID, FactorName) {
 
-                                   if (displayManagerName != false){
-                                     document.getElementById("managerName").innerHTML = 'Manager Name: '+data["profile"]["manager"]+'<br>';}
-                                     else{
-                                       removeHTMLElement("managerName")}
+    var resetFactorURL = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/factors/' + factorID,
+        type: 'DELETE',
+        secure: true,
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+    client.request(resetFactorURL).then(function(data) {
+        if (data.status == 204) {
+            $("#NotificationMessage").html('<strong>Success! </strong>' + FactorName + ' factor was reset');
+            $("#alertNotificationDiv").show();
+            refreshInfo(OktaID);
+        }
 
-                                       if (displayManagerEmail != false){
-                                         document.getElementById("managerEmail").innerHTML = 'Manager Email: '+data["profile"]["managerId"]+'<br>';}
-                                         else{
-                                           removeHTMLElement("managerEmail")}
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to reset ' + FactorName + ' factor');
+        $("#alertNotificationDiv").show();
+    })
 
-                                           document.getElementById("submitNewOktaPassword").onclick = function () {resetOktaPassword(data["id"]);}
-                                           document.getElementById("clearSessionsButton").onclick = function () {clearUserSessions(data["id"])}
-                                           document.getElementById("suspendUserButton").onclick = function () {suspendUser(data["id"])}
-                                           document.getElementById("unsuspendUserButton").onclick = function () {unsuspendUser(data["id"])}
-                                           document.getElementById("unlockUserButton").onclick = function () {unlockOktaUser(data["id"]);}
-                                           document.getElementById("deactivateUserButton").onclick = function () {deactivateUser(data["id"]);}
+}
 
-           //Update buttons so only applicable buttons are enabled
-           if (data["status"] == 'SUSPENDED'){
+function resetOktaPassword(OktaID) {
+
+    var newpwd = document.getElementById('pwd').value
+
+    var resetOktaPasswordCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID,
+        type: 'POST',
+        secure: true,
+        datatype: 'json',
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        data: '{"credentials":{"password":{"value":"' + newpwd + '"}}}',
+        cors: false
+    };
+
+    client.request(resetOktaPasswordCall).then(function(data) {
+        if (data.status == 200) {
+
+
+            var checkBox = document.getElementById("expirePasswordCheckbox");
+            // If the checkbox is checked, display the output text
+            if (checkBox.checked == true) {
+                expireOktaPassword(OktaID)
+            } else {
+                $("#NotificationMessage").html('<strong>Success! </strong> Password was set successfully');
+                $("#alertNotificationDiv").show();
+                $('#ResetPasswordCollapseForm').collapse('toggle');
+                refreshInfo(OktaID);
+            }
+
+        }
+
+    }).catch(function(error) {
+        $('#ResetPasswordCollapseForm').collapse('toggle');
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to set new password. Please ensure new password matches organizational password policy');
+        $("#alertNotificationDiv").show();
+    });
+
+}
+
+function expireOktaPassword(OktaID) {
+
+    var expirePasswordinOkta = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/lifecycle/expire_password?tempPassword=false',
+        type: 'POST',
+        secure: true,
+        datatype: 'json',
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+    client.request(expirePasswordinOkta).then(function(data) {
+
+        if (data.status == 200) {
+            $('#ResetPasswordCollapseForm').collapse('toggle');
+            $("#NotificationMessage").html('<strong>Success! </strong>Password was reset and expired.');
+            $("#alertNotificationDiv").show();
+            refreshInfo(OktaID);
+
+        }
+
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to expire password');
+        $("#alertNotificationDiv").show();
+    });
+}
+
+function unlockOktaUser(OktaID) {
+    var unlockOktaUserCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/lifecycle/unlock',
+        type: 'POST',
+        secure: true,
+        datatype: 'json',
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(unlockOktaUserCall).then(function(data) {
+        if (data.status == 200) {
+
+            $("#NotificationMessage").html('<strong>Success! </strong>User account was unlocked.');
+            $("#alertNotificationDiv").show();
+            document.getElementById("unlockUserButton").classList.add("disabled")
+            refreshInfo(OktaID);
+        }
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to unlocked user account');
+        $("#alertNotificationDiv").show();
+    });
+}
+
+function clearUserSessions(OktaID) {
+    var clearUserSessionsCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/sessions',
+        type: 'DELETE',
+        secure: true,
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(clearUserSessionsCall).then(function(data) {
+        if (data.status == 204) {
+            $("#NotificationMessage").html('<strong>Success! </strong> All existing user sessions were cleared');
+            $("#alertNotificationDiv").show();
+            refreshInfo(OktaID);
+        }
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to clear user sessions');
+        $("#alertNotificationDiv").show();
+    });
+
+}
+
+function suspendUser(OktaID) {
+    var suspendUserCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/lifecycle/suspend',
+        type: 'POST',
+        secure: true,
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(suspendUserCall).then(function(data) {
+        if (data.status == 200) {
+            $("#NotificationMessage").html('<strong>Success! </strong> User was suspended in Okta');
+            $("#alertNotificationDiv").show();
+            document.getElementById("unsuspendUserButton").classList.remove("disabled")
+            refreshInfo(OktaID);
+        }
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to suspend user account');
+        $("#alertNotificationDiv").show();
+    });
+
+}
+
+function unsuspendUser(OktaID) {
+    var suspendUserCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/lifecycle/unsuspend',
+        type: 'POST',
+        secure: true,
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(suspendUserCall).then(function(data) {
+        if (data.status == 200) {
+            $("#NotificationMessage").html('<strong>Success! </strong> User was unsuspended in Okta');
+            $("#alertNotificationDiv").show();
+            document.getElementById("suspendUserButton").classList.remove("disabled")
+            document.getElementById("unsuspendUserButton").classList.add("disabled")
+            refreshInfo(OktaID);
+        }
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to unsuspend user account');
+        $("#alertNotificationDiv").show();
+    });
+
+}
+
+function deactivateUser(OktaID) {
+    var suspendUserCall = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/lifecycle/deactivate?sendEmail=false',
+        type: 'POST',
+        secure: true,
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(suspendUserCall).then(function(data) {
+        if (data.status == 200) {
+            $("#NotificationMessage").html('<strong>Success! </strong> User was deactivated in Okta');
+            $("#alertNotificationDiv").show();
+            document.getElementById("deactivateUserButton").classList.add("disabled")
+            refreshInfo(OktaID);
+        }
+    }).catch(function(error) {
+        $("#NotificationMessage").html('<strong>Error: </strong> Unable to unsuspend user account');
+        $("#alertNotificationDiv").show();
+    });
+
+}
+
+function getEnrolledMFAFactors(OktaID) {
+
+    document.getElementById("mfa-dropdown-buttons").innerHTML = ""
+
+    var getOktaFactors = {
+        url: 'https://' + "{{setting.oktaSubDomain}}" + '.okta.com/api/v1/users/' + OktaID + '/factors',
+        type: 'GET',
+        secure: true,
+        datatype: 'json',
+        contentType: 'application/json',
+        httpCompleteResponse: true,
+        headers: {
+            "Authorization": "SSWS " + "{{setting.oktaAPItoken}}"
+        },
+        cors: false
+    };
+
+    client.request(getOktaFactors).then(function(data) {
+        if (data.status == 200) {
+            if (Object.keys(data.responseJSON).length > 0) {
+                for (var i in data.responseJSON) {
+                    var FactorID = data.responseJSON[i]["id"]
+                    var MFAActivationStatus = data.responseJSON[i]["status"]
+                    var MFAProvider = data.responseJSON[i]["provider"]
+                    var MFAType = data.responseJSON[i]["factorType"]
+                    var MFAName = MFAList[MFAProvider + " " + MFAType]
+                    var MFAButtonName = "reset" + MFAProvider + MFAType + "FactorButton"
+                    console.log(MFAProvider + " " + MFAType)
+                    if (MFAProvider + " " + MFAType in MFAList) {
+                        document.getElementById("mfa-dropdown-buttons").innerHTML += "<a class='dropdown-item' id='" + MFAButtonName + "' onclick='resetOktaFactor(\"" + OktaID + "\",\"" + FactorID + "\",\"" + MFAName + "\")' href='#'>Reset " + MFAName + " factor</a>";
+                    }
+                }
+            } else {
+                document.getElementById("mfa-dropdown-buttons").innerHTML += "<a class='dropdown-item' id='NoMFAEnrolledButton' href='#'>No factors enrolled</a>";
+            }
+
+        }
+    })
+}
+
+function removeHTMLElement(id) {
+    var element = document.getElementById(id);
+    if (element != null) {
+        document.getElementById(id).remove();
+    }
+}
+
+function displayOktaInfo(oktaProfile) {
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("appScreen").style.display = "block";
+    client.metadata().then(function(metadata) {
+        var displayTitle = metadata.settings["optionShowTitle"]
+        var displayLocation = metadata.settings["optionShowLocation"]
+        var displayOktaLogin = metadata.settings["optionShowOktaLogin"]
+        var displayAccountStatus = metadata.settings["optionShowAccountStatus"]
+        var displayPasswordChanged = metadata.settings["optionShowPwdLastChanged"]
+        var displaymobileNumber = metadata.settings["optionShowMobileNumber"]
+        var displayManagerName = metadata.settings["optionShowManagerName"]
+        var displayManagerEmail = metadata.settings["optionShowManagerEmail"]
+
+        getEnrolledMFAFactors(oktaProfile["id"]);
+        //Display basic account details
+        document.getElementById("fullname").innerHTML = oktaProfile["profile"]["firstName"] + ' ' + oktaProfile["profile"]["lastName"] + '<br>';
+
+        if (displayTitle != false) {
+            if (oktaProfile["profile"]["title"]) {
+                document.getElementById("title").innerHTML = oktaProfile["profile"]["title"] + '<br>';
+            }
+        } else {
+            removeHTMLElement("title")
+        }
+
+        if (displayLocation != false) {
+            if (oktaProfile["profile"]["countryCode"]) {
+                document.getElementById("location").innerHTML = oktaProfile["profile"]["city"] + ', ' + oktaProfile["profile"]["countryCode"] + '<br>';
+            }
+        } else {
+            removeHTMLElement("location")
+        }
+
+        if (displayOktaLogin != false) {
+            document.getElementById("oktalogin").innerHTML = oktaProfile["profile"]["login"] + '<br>';
+        } else {
+            removeHTMLElement("oktalogin")
+        }
+
+        if (displayAccountStatus != false) {
+            document.getElementById("accountstatus").innerHTML = "Status: " + oktaProfile["status"] + '<br>';
+        } else {
+            removeHTMLElement("accountstatus")
+        }
+
+        if (displayPasswordChanged != false) {
+            document.getElementById("pwdlastchanged").innerHTML = 'Password last set: ' + moment(oktaProfile["passwordChanged"]).format('MMM Do, YYYY') + '<br>';
+        } else {
+            removeHTMLElement("pwdlastchanged")
+        }
+
+        if (displaymobileNumber != false) {
+            if (oktaProfile["profile"]["mobilePhone"]) {
+                document.getElementById("mobilenumber").innerHTML = 'Mobile Number: ' + oktaProfile["profile"]["mobilePhone"] + '<br>';
+            }
+        } else {
+            removeHTMLElement("mobilenumber")
+        }
+        if (displayManagerName != false) {
+            if (oktaProfile["profile"]["manager"]) {
+                document.getElementById("managerName").innerHTML = 'Manager Name: ' + oktaProfile["profile"]["manager"] + '<br>';
+            }
+        } else {
+            removeHTMLElement("managerName")
+        }
+
+        if (displayManagerEmail != false) {
+            if (oktaProfile["profile"]["managerId"]) {
+                document.getElementById("managerEmail").innerHTML = 'Manager Email: ' + oktaProfile["profile"]["managerId"] + '<br>';
+            }
+        } else {
+            removeHTMLElement("managerEmail")
+        }
+
+        document.getElementById("submitNewOktaPassword").onclick = function() {
+            resetOktaPassword(oktaProfile["id"]);
+        }
+        document.getElementById("clearSessionsButton").onclick = function() {
+            clearUserSessions(oktaProfile["id"])
+        }
+        document.getElementById("suspendUserButton").onclick = function() {
+            suspendUser(oktaProfile["id"])
+        }
+        document.getElementById("unsuspendUserButton").onclick = function() {
+            unsuspendUser(oktaProfile["id"])
+        }
+        document.getElementById("unlockUserButton").onclick = function() {
+            unlockOktaUser(oktaProfile["id"]);
+        }
+        document.getElementById("deactivateUserButton").onclick = function() {
+            deactivateUser(oktaProfile["id"]);
+        }
+
+        //Update buttons so only applicable buttons are enabled
+        if (oktaProfile["status"] == 'SUSPENDED') {
             document.getElementById("suspendUserButton").classList.add("disabled")
-            document.getElementById("unsuspendUserButton").classList.remove("disabled")  
-          }
+            document.getElementById("unsuspendUserButton").classList.remove("disabled")
+        }
 
-          if (data["status"] == 'DEPROVISIONED'){
+        if (oktaProfile["status"] == 'DEPROVISIONED') {
             document.getElementById("submitNewOktaPassword").classList.add("disabled")
             document.getElementById("resetOktaPasswordButton").classList.add("disabled")
             document.getElementById("suspendUserButton").classList.add("disabled")
             document.getElementById("clearSessionsButton").classList.add("disabled")
-            document.getElementById("deactivateUserButton").classList.add("disabled")            
-          }
-          
-          if (data["status"] == 'LOCKED_OUT'){
-            document.getElementById("unlockUserButton").classList.remove("disabled")            
-          }      
-          
-        }).catch(function(error) {
-          document.getElementById("appScreen").style.display = "block";
-          document.getElementById("spinner").style.display = "none";
-          $("#appScreen").html(OktaID+" was not found in your Okta org")
-        })
+            document.getElementById("deactivateUserButton").classList.add("disabled")
+        }
 
-
-      })
-
+        if (oktaProfile["status"] == 'LOCKED_OUT') {
+            document.getElementById("unlockUserButton").classList.remove("disabled")
+        }
+    })
 }
 
 getCurrentUserEmail()
 
-$(document).ready(function(){
-  $('[data-toggle="popover"]').popover();
-  $('#closeAlert1').on('click', function() {
-    $("#alertNotificationDiv").hide();  
-  });
-  $('#pwd').on('input', function() {
-    if( $('#pwd').filter(function() { return !!this.value; }).length > 0 ) {
-     $('#submitNewOktaPassword').prop('disabled', false);
-   } else {
-     $('#submitNewOktaPassword').prop('disabled', true);
-   }
- });
-  });
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+    $('#closeAlert1').on('click', function() {
+        $("#alertNotificationDiv").hide();
+    });
+    $('#pwd').on('input', function() {
+        if ($('#pwd').filter(function() {
+                return !!this.value;
+            }).length > 0) {
+            $('#submitNewOktaPassword').prop('disabled', false);
+        } else {
+            $('#submitNewOktaPassword').prop('disabled', true);
+        }
+    });
+});
 
   </script>
   </body>
