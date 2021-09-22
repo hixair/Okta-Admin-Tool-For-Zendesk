@@ -12,7 +12,7 @@
       "ticket_sidebar": "assets/iframe.html"
     }
   },
-  "version": "2.0",
+  "version": "1.1",
   "frameworkVersion": "2.0",
   "gaID":"UA-166248870-1",
   "domainWhitelist": ["{{setting.oktaSubDomain}}.okta.com"],
@@ -21,14 +21,28 @@
           "name": "oktaSubDomain",
           "type": "text",
           "required": false,
-          "secure": true
-      }
-      ,
+          "secure": true,
+          "default": "yourOktaSubdomain"
+      },
       {
           "name": "oktaAPItoken",
           "type": "text",
           "required": false,
           "secure": true
+      },
+      {
+        "name": "optionShowOktaLogin",
+        "type": "checkbox",
+        "default":true,
+        "required": false,
+        "secure": false
+      },
+      {
+        "name": "optionShowEmail",
+        "type": "checkbox",
+        "default":true,
+        "required": false,
+        "secure": false
       },
       {
           "name": "optionShowTitle",
@@ -45,44 +59,37 @@
           "secure": false
       },
       {
-          "name": "optionShowOktaLogin",
-          "type": "checkbox",
-          "default":false,
-          "required": false,
-          "secure": false
-      },
-      {
           "name": "optionShowLocation",
           "type": "checkbox",
-          "default":false,
+          "default":true,
           "required": false,
           "secure": false
       },
        {
           "name": "optionShowPwdLastChanged",
           "type": "checkbox",
-          "default":false,
+          "default":true,
           "required": false,
           "secure": false
       },
       {
           "name": "optionShowMobileNumber",
           "type": "checkbox",
-          "default":false,
+          "default":true,
           "required": false,
           "secure": false
       },
       {
           "name": "optionShowManagerName",
           "type": "checkbox",
-          "default":false,
+          "default":true,
           "required": false,
           "secure": false
       },
       {
           "name": "optionShowManagerEmail",
           "type": "checkbox",
-          "default":false,
+          "default":true,
           "required": false,
           "secure": false
       }

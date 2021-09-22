@@ -35,6 +35,12 @@
               "title":"Ask user if Okta Login needs to be displayed"  
           }  
         },
+        "optionShowEmail": {  
+          "label": {  
+              "value":"Show email address",  
+              "title":"Ask user if primary email needs to be displayed"  
+          }  
+        },
         "optionShowAccountStatus": {  
           "label": {  
               "value":"Show account status",  
