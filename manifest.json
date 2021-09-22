@@ -12,7 +12,7 @@
       "ticket_sidebar": "assets/iframe.html"
     }
   },
-  "version": "1.1",
+  "version": "2.1",
   "frameworkVersion": "2.0",
   "gaID":"UA-166248870-1",
   "domainWhitelist": ["{{setting.oktaSubDomain}}.okta.com"],
