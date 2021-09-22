@@ -70,6 +70,7 @@ input[type=text]:focus {
                  <div class="col-12 col-lg-8 col-md-6">
                     <h3 id="fullname" class="mb-0 text-truncated"></h3>
                     <span id="oktalogin" class="lead"></span>
+                    <span id="email" class="lead"></span>
                     <span id="title" class=".font-weight-normal"></span>
                     <span id="location" class=".font-weight-normal"></span>
                     <kbd id="accountstatus" class=".font-weight-normal"></kbd>
@@ -609,6 +610,7 @@ function displayOktaInfo(oktaProfile) {
         var displayTitle = metadata.settings["optionShowTitle"]
         var displayLocation = metadata.settings["optionShowLocation"]
         var displayOktaLogin = metadata.settings["optionShowOktaLogin"]
+        var displayEmail = metadata.settings["optionShowEmail"]
         var displayAccountStatus = metadata.settings["optionShowAccountStatus"]
         var displayPasswordChanged = metadata.settings["optionShowPwdLastChanged"]
         var displaymobileNumber = metadata.settings["optionShowMobileNumber"]
@@ -639,6 +641,12 @@ function displayOktaInfo(oktaProfile) {
             document.getElementById("oktalogin").innerHTML = oktaProfile["profile"]["login"] + '<br>';
         } else {
             removeHTMLElement("oktalogin")
+        }
+        
+        if (displayEmail != false) {
+            document.getElementById("email").innerHTML = oktaProfile["profile"]["email"] + '<br>';
+        } else {
+            removeHTMLElement("email")
         }
 
         if (displayAccountStatus != false) {
