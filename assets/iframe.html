@@ -75,6 +75,7 @@ input[type=text]:focus {
                     <span id="email" class=".font-weight-normal"></span>
                     <span id="title" class=".font-weight-normal"></span>
                     <span id="location" class=".font-weight-normal"></span>
+                    <span id="employeeType" class=".font-weight-normal"></span>
                     <kbd id="accountstatus" class=".font-weight-normal"></kbd>
                     <br>
                     <span id="pwdlastchanged" class=".font-weight-normal"></span>
@@ -611,6 +612,7 @@ function displayOktaInfo(oktaProfile) {
     client.metadata().then(function(metadata) {
         var displayTitle = metadata.settings["optionShowTitle"]
         var displayLocation = metadata.settings["optionShowLocation"]
+        var displayemployeeType = metadata.settings["optionShowemployeeType"]
         var displayOktaLogin = metadata.settings["optionShowOktaLogin"]
         var displayEmail = metadata.settings["optionShowEmail"]
         var displayAccountStatus = metadata.settings["optionShowAccountStatus"]
@@ -637,6 +639,12 @@ function displayOktaInfo(oktaProfile) {
             }
         } else {
             removeHTMLElement("location")
+        }
+
+        if (displayemployeeType != false) {
+            document.getElementById("employeeType").innerHTML = oktaProfile["profile"]["employeeType"] + '<br>';
+        } else {
+            removeHTMLElement("employeeType")
         }
 
         if (displayOktaLogin != false) {

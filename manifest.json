@@ -9,7 +9,8 @@
   "private": false,
   "location": {
     "support": {
-      "ticket_sidebar": "assets/iframe.html"
+      "ticket_sidebar": "assets/iframe.html",
+      "user_sidebar": "assets/iframe.html"
     }
   },
   "version": "2.1",
@@ -64,6 +65,13 @@
           "default":true,
           "required": false,
           "secure": false
+      },
+      {
+        "name": "optionShowemployeeType",
+        "type": "checkbox",
+        "default":true,
+        "required": false,
+        "secure": false
       },
        {
           "name": "optionShowPwdLastChanged",

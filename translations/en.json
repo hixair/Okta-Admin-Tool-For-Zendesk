@@ -29,6 +29,12 @@
               "title":"Ask user if location needs to be displayed"  
           }  
         },
+        "optionShowemployeeType": {  
+          "label": {  
+              "value":"Show employee type (intern, permanent, ...)",  
+              "title":"Ask user if employee type needs to be displayed"  
+          }  
+        },
         "optionShowOktaLogin": {  
           "label": {  
               "value":"Show Okta login",  
